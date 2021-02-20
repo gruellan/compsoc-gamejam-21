@@ -25,6 +25,18 @@ class Sprite(pygame.sprite.Sprite):
             self.y += self.FALL_SPEED
 
 
+class Wall(pygame.sprite.Sprite):
+    def __init__(self, x, y, speed):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load("wall.png").convert_alpha()
+        self.x = x
+        self.y = y
+        self.speed = speed
+
+    def update(self):
+        self.x -= self.speed
+
+
 def run():
     pygame.init()
     pygame.display.set_caption("LETS GO")
@@ -32,6 +44,13 @@ def run():
     clock = pygame.time.Clock()
     done = False
     sprite = Sprite()
+    walls = [Wall(300, 450, 3),
+             Wall(300, -700, 3),
+             Wall(700, -500, 3),
+             Wall(700, 600, 3),
+             Wall(1000, -750, 3),
+             Wall(1000, 300, 3)
+             ]
 
     while not done:
         clock.tick(60)
@@ -44,6 +63,9 @@ def run():
 
         sprite.update()
         display.fill((0, 0, 0))
+        for wall in walls:
+            wall.update()
+            display.blit(wall.image, (wall.x, wall.y))
         display.blit(sprite.image, (sprite.x, sprite.y))
         pygame.display.update()
 
